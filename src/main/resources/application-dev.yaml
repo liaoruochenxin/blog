@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/project-name?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+    username: windows
+    password: 123456
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+knife4j:
+  enable: true
+
