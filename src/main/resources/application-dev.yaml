@@ -11,3 +11,7 @@ mybatis-plus:
 knife4j:
   enable: true
 
+tencent:
+  cos:
+    secretId: your secretId
+    secretKey: your secretKey

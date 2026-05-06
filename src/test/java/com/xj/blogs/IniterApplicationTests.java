@@ -1,4 +1,4 @@
-package com.init.initer;
+package com.xj.blogs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
