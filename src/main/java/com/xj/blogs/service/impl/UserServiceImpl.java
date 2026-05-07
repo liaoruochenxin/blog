@@ -65,4 +65,16 @@ public class UserServiceImpl implements UserService {
         }
         throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR); 
     }
+
+    @Override
+    public boolean userLogout(HttpServletRequest request) {
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
+        if (userObj instanceof User user) {
+            ThrowUtils.throwIf(user.getId() == null, new BusinessException(ErrorCode.NOT_LOGIN_ERROR));
+        } else {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
+        request.getSession().removeAttribute(UserConstant.USER_LOGIN_STATE);
+        return true;
+    }
 }

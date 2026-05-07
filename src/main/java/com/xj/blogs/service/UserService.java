@@ -30,4 +30,11 @@ public interface UserService {
      * @return 
      */
     UserLoginVO getLoginUser(HttpServletRequest request);
+
+    /**
+     * 用户注销
+     * @param request
+     * @return
+     */
+    boolean userLogout(HttpServletRequest request);
 }
