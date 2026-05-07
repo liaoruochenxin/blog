@@ -1,6 +1,5 @@
 package com.xj.blogs.service;
 
-import com.xj.blogs.model.entity.User;
 import com.xj.blogs.model.vo.UserLoginVO;
 
 import jakarta.servlet.http.HttpServletRequest;
