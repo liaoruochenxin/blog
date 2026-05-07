@@ -2,6 +2,11 @@ package com.xj.blogs.helper;
 
 import org.springframework.util.DigestUtils;
 
+import com.xj.blogs.model.entity.User;
+import com.xj.blogs.model.vo.UserLoginVO;
+
+import cn.hutool.core.bean.BeanUtil;
+
 public class UserHelper {
 
     // 盐值
@@ -13,5 +18,9 @@ public class UserHelper {
      */
     public static String getEncryptPassword(String userPassword) {
         return DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
+    }
+
+    public static UserLoginVO copy2UserLoginVO(User user) {
+        return BeanUtil.copyProperties(user, UserLoginVO.class);
     }
 }

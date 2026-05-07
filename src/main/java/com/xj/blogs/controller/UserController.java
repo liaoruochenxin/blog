@@ -42,4 +42,9 @@ public class UserController {
         return ResultUtils.success(userService.userLogin(entity.getUserAccount(), entity.getUserPassword(), request));
     }
     
+    @PostMapping("/get/login")
+    public BaseResponse<UserLoginVO> getLoginUser(HttpServletRequest request) {
+        return ResultUtils.success(userService.getLoginUser(request));
+    }
+    
 }

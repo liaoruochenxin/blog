@@ -2,6 +2,7 @@ package com.xj.blogs.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.xj.blogs.constant.UserConstant;
 import com.xj.blogs.exception.BusinessException;
 import com.xj.blogs.exception.ErrorCode;
 import com.xj.blogs.exception.ThrowUtils;
@@ -51,11 +52,17 @@ public class UserServiceImpl implements UserService {
             new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误"));
         
         // 记录用户登录态
-        request.getSession().setAttribute("USER_LOGIN_STATE", user);
-        UserLoginVO userLoginVO = new UserLoginVO();
-        userLoginVO.setUserAccount(user.getUserAccount());
-        userLoginVO.setUserAvatar(user.getUserAvatar());
-        userLoginVO.setUserProfile(user.getUserProfile());
-        return userLoginVO;
+        request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
+        return UserHelper.copy2UserLoginVO(user);
+    }
+
+    @Override
+    public UserLoginVO getLoginUser(HttpServletRequest request) {
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
+        if (userObj instanceof User user) {
+            ThrowUtils.throwIf(user.getId() == null, new BusinessException(ErrorCode.NOT_LOGIN_ERROR));
+            return UserHelper.copy2UserLoginVO(user);
+        }
+        throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR); 
     }
 }

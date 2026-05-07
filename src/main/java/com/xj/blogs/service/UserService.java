@@ -1,5 +1,6 @@
 package com.xj.blogs.service;
 
+import com.xj.blogs.model.entity.User;
 import com.xj.blogs.model.vo.UserLoginVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,4 +24,11 @@ public interface UserService {
      * @return 脱敏后用户信息
      */
     UserLoginVO userLogin(String userAccount, String userPassword, HttpServletRequest request);
+
+    /**
+     * 获取当前登录用户
+     * @param request
+     * @return 
+     */
+    UserLoginVO getLoginUser(HttpServletRequest request);
 }
