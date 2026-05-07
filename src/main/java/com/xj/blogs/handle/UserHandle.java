@@ -28,4 +28,10 @@ public class UserHandle {
     public void insert(User user) {
         userMapper.insert(user);
     }
+
+    public User queryByUserAccount(String userAccount) {
+        return new LambdaQueryChainWrapper<>(userMapper)
+            .eq(User::getUserAccount, userAccount)
+            .one();
+    }
 }

@@ -1,5 +1,7 @@
 package com.xj.blogs.model.entity;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -11,7 +13,11 @@ import lombok.Data;
 
 @TableName(value ="user")
 @Data
-public class User {
+public class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * id（要指定主键策略）
      */

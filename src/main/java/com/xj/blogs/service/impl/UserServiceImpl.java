@@ -9,8 +9,10 @@ import com.xj.blogs.handle.UserHandle;
 import com.xj.blogs.helper.UserHelper;
 import com.xj.blogs.model.entity.User;
 import com.xj.blogs.model.enums.UserRoleEnum;
+import com.xj.blogs.model.vo.UserLoginVO;
 import com.xj.blogs.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -38,5 +40,22 @@ public class UserServiceImpl implements UserService {
         user.setUserName("username");
         userHandle.insert(user);
         return user.getId();
+    }
+
+    @Override
+    public UserLoginVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+        String encryptPassword = UserHelper.getEncryptPassword(userPassword);
+        User user = userHandle.queryByUserAccount(userAccount);
+        ThrowUtils.throwIf(user == null, new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在"));
+        ThrowUtils.throwIf(!user.getUserPassword().equals(encryptPassword), 
+            new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误"));
+        
+        // 记录用户登录态
+        request.getSession().setAttribute("USER_LOGIN_STATE", user);
+        UserLoginVO userLoginVO = new UserLoginVO();
+        userLoginVO.setUserAccount(user.getUserAccount());
+        userLoginVO.setUserAvatar(user.getUserAvatar());
+        userLoginVO.setUserProfile(user.getUserProfile());
+        return userLoginVO;
     }
 }
