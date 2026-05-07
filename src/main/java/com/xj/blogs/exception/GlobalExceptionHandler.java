@@ -8,6 +8,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.xj.blogs.common.BaseResponse;
 import com.xj.blogs.common.ResultUtils;
 
+import cn.dev33.satoken.exception.NotLoginException;
+
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,5 +49,11 @@ public class GlobalExceptionHandler {
     public BaseResponse<Void> exceptionHandle(Exception e) {
         log.error("系统异常", e);
         return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "系统内部错误");
+    }
+
+    @ExceptionHandler(NotLoginException.class)
+    public BaseResponse<Void> notLoginExceptionHandler(NotLoginException e) {
+        log.error("未登录");
+        return ResultUtils.error(ErrorCode.NOT_LOGIN_ERROR);
     }
 }

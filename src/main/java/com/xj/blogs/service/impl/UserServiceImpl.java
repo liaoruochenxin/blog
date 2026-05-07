@@ -13,6 +13,7 @@ import com.xj.blogs.model.enums.UserRoleEnum;
 import com.xj.blogs.model.vo.UserLoginVO;
 import com.xj.blogs.service.UserService;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
@@ -52,29 +53,20 @@ public class UserServiceImpl implements UserService {
             new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误"));
         
         // 记录用户登录态
-        request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
+        StpUtil.login(user.getId());
         return UserHelper.copy2UserLoginVO(user);
     }
 
     @Override
     public UserLoginVO getLoginUser(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
-        if (userObj instanceof User user) {
-            ThrowUtils.throwIf(user.getId() == null, new BusinessException(ErrorCode.NOT_LOGIN_ERROR));
-            return UserHelper.copy2UserLoginVO(user);
-        }
-        throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR); 
+        long userId = StpUtil.getLoginIdAsLong();
+        User user = userHandle.queryById(userId);
+        return UserHelper.copy2UserLoginVO(user);
     }
 
     @Override
     public boolean userLogout(HttpServletRequest request) {
-        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
-        if (userObj instanceof User user) {
-            ThrowUtils.throwIf(user.getId() == null, new BusinessException(ErrorCode.NOT_LOGIN_ERROR));
-        } else {
-            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
-        }
-        request.getSession().removeAttribute(UserConstant.USER_LOGIN_STATE);
+        StpUtil.logout();
         return true;
     }
 }

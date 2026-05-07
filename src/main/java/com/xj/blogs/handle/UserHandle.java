@@ -29,9 +29,25 @@ public class UserHandle {
         userMapper.insert(user);
     }
 
+    /**
+     * 根据账号查询用户
+     * @param userAccount 账号
+     * @return 用户信息
+     */
     public User queryByUserAccount(String userAccount) {
         return new LambdaQueryChainWrapper<>(userMapper)
             .eq(User::getUserAccount, userAccount)
+            .one();
+    }
+
+    /**
+     * 根据用户ID查询用户
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+    public User queryById(Long userId) {
+        return new LambdaQueryChainWrapper<>(userMapper)
+            .eq(User::getId, userId)
             .one();
     }
 }
